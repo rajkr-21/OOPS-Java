@@ -11,7 +11,7 @@ public class rectangle {
 		double width = sc.nextDouble();
 
 		double area = length * width;
-		System.out.println("Area of the rectangle: " + area);
+		System.out.println("Area of the rectangle is" + area);
 
 		sc.close();
 	}
