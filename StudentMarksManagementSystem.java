@@ -1,4 +1,4 @@
-public import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 class NegativeMarksException extends Exception {
@@ -104,6 +104,4 @@ public class StudentMarksManagementSystem {
         }
     }
 }
- {
-    
-}
+
