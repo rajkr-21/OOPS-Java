@@ -51,7 +51,7 @@ class Book {
 }
 
 
-public class LibraryTest {
+public class UseCase1 {
 
     public static void main(String[] args) {
 
