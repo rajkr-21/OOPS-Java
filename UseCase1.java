@@ -61,7 +61,7 @@ public class UseCase1 {
         System.out.println(b1.getTitle() + " by " + b1.getAuthor());
         System.out.println("Price: " + b2.getPrice());
         System.out.println("Library: " + Book.libraryName);
-        System.out.println("Total books added: " + Book.bookCount);
+        System.out.println("Total books added in Library: " + Book.bookCount);
     }
 <<<<<<< HEAD
 }
