@@ -63,4 +63,8 @@ public class UseCase1 {
         System.out.println("Library: " + Book.libraryName);
         System.out.println("Total books added: " + Book.bookCount);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fd9d824 (first commit)
