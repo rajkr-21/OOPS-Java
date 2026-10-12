@@ -13,7 +13,7 @@ public class AgeValidation {
     }
     public static void agecheck(int age) throws InvalidAgeException {
             if (age < 18) {
-                throw new InvalidAgeException("Age is invalid.");
+                throw new InvalidAgeException("Age is invalid..");
             }
     }
     class InvalidAgeException extends Exception {
