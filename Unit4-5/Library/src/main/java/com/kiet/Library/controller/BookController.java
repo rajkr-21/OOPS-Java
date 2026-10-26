@@ -1,3 +1,4 @@
+
 package com.kiet.Library.controller;
 
 import java.util.List;
@@ -20,82 +21,72 @@ public class BookController {
         this.service = service;
     }
 
-    // Q3: Get all books
     @GetMapping
     public List<Book> getAllBooks() {
         return service.getAllBooks();
     }
 
-    // Q3: Get book by ID
     @GetMapping("/{bookId}")
     public ResponseEntity<?> getBookById(
             @PathVariable int bookId) {
 
-        Book book = service.getBookById(bookId);
+        Book b = service.getBookById(bookId);
 
-        if (book == null) {
+        if (b == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", "Book not found"));
         }
 
-        return ResponseEntity.ok(book);
+        return ResponseEntity.ok(b);
     }
 
-    // Q4: Add a new book
     @PostMapping
-    public ResponseEntity<Book> addBook(
-            @RequestBody Book book) {
+    public ResponseEntity<?> addBook(@RequestBody Book book) {
+        if (service.addBook(book)) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(book);
+        }
 
-        service.addBook(book);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(book);
+        return ResponseEntity.badRequest()
+                .body(Map.of("message", "Book could not be added"));
     }
 
-    // Q5: Update a book
     @PutMapping("/{bookId}")
     public ResponseEntity<Map<String, String>> updateBook(
             @PathVariable int bookId,
-            @RequestBody Book updatedBook) {
+            @RequestBody Book book) {
 
-        String result = service.updateBook(bookId, updatedBook);
-
-        if (result.equals("Book not found")) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message", result));
+        if (service.updateBook(bookId, book)) {
+            return ResponseEntity.ok(
+                    Map.of("message", "Book updated successfully"));
         }
 
-        return ResponseEntity.ok(Map.of("message", result));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", "Book not found"));
     }
 
-    // Q5: Delete a book
     @DeleteMapping("/{bookId}")
     public ResponseEntity<Map<String, String>> deleteBook(
             @PathVariable int bookId) {
 
-        String result = service.deleteBook(bookId);
-
-        if (result.equals("Book not found")) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message", result));
+        if (service.deleteBook(bookId)) {
+            return ResponseEntity.ok(
+                    Map.of("message", "Book deleted successfully"));
         }
 
-        return ResponseEntity.ok(Map.of("message", result));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", "Book not found"));
     }
 
-    // Q6: Search books by category
     @GetMapping("/search")
     public List<Book> searchByCategory(
             @RequestParam String category) {
-
         return service.searchByCategory(category);
     }
 
-    // Q6: Find books published from a year onward
     @GetMapping("/published")
     public List<Book> findPublishedFromYear(
             @RequestParam int fromYear) {
-
         return service.findPublishedFromYear(fromYear);
     }
 }

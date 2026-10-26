@@ -1,77 +1,48 @@
+
 package com.kiet.Library.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
 import com.kiet.Library.model.Book;
+import com.kiet.Library.Repository.BookRepository;
 
 @Service
 public class BookService {
 
-    List<Book> books = new ArrayList<>();
+    private final BookRepository repo;
+
+    public BookService(BookRepository repo) {
+        this.repo = repo;
+    }
 
     public List<Book> getAllBooks() {
-        return books;
+        return repo.findAll();
     }
 
-    public Book getBookById(int bookId) {
-        for (Book b : books) {
-            if (b.getBookId() == bookId) {
-                return b;
-            }
-        }
-        return null;
+    public Book getBookById(int id) {
+        List<Book> result = repo.findById(id);
+        return result.isEmpty() ? null : result.get(0);
     }
 
-    public String addBook(Book book) {
-        books.add(book);
-        return "Book added successfully";
+    public boolean addBook(Book book) {
+        return repo.insert(book) > 0;
     }
 
-    public String updateBook(int bookId, Book updatedBook) {
-        for (Book b : books) {
-            if (b.getBookId() == bookId) {
-                b.setTitle(updatedBook.getTitle());
-                b.setAuthor(updatedBook.getAuthor());
-                b.setCategory(updatedBook.getCategory());
-                b.setPublicationYear(updatedBook.getPublicationYear());
-                b.setAvailable(updatedBook.isAvailable());
-                return "Book updated successfully";
-            }
-        }
-        return "Book not found";
+    public boolean updateBook(int id, Book book) {
+        return repo.update(book, id) > 0;
     }
 
-    public String deleteBook(int bookId) {
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getBookId() == bookId) {
-                books.remove(i);
-                return "Book deleted successfully";
-            }
-        }
-        return "Book not found";
+    public boolean deleteBook(int id) {
+        return repo.deleteById(id) > 0;
     }
 
     public List<Book> searchByCategory(String category) {
-        List<Book> result = new ArrayList<>();
-
-        for (Book b : books) {
-            if (b.getCategory().equalsIgnoreCase(category)) {
-                result.add(b);
-            }
-        }
-        return result;
+        return repo.findByCategory(category);
     }
 
-    public List<Book> findPublishedFromYear(int fromYear) {
-        List<Book> result = new ArrayList<>();
-
-        for (Book b : books) {
-            if (b.getPublicationYear() >= fromYear) {
-                result.add(b);
-            }
-        }
-        return result;
+    public List<Book> findPublishedFromYear(int year) {
+        return repo.findPublishedFromYear(year);
     }
 }
